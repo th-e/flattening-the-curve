@@ -15,16 +15,16 @@ object Frontend {
   def view: Div =
     div(
       h3("Flattening the curve"),
-      span("virus free :)"),
+      span(".... unrelated to any viruses :)"),
       div(
         cls("header"),
         "Version: ",
         child.text <-- version.signal.map(_.toString),
         onMountSet(ctx => {
           runtime.unsafeRunAsync_ {
-            client.version.tap { receivedVersionString =>
+            client.version.tap { receivedVersion =>
               {
-                version.update(_ => receivedVersionString.toString)
+                version.update(_ => receivedVersion)
                 UIO.unit
               }
             }

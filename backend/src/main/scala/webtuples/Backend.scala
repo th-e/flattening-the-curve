@@ -17,17 +17,17 @@ object Backend extends App {
     } yield ()
 
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = {
-    val serviceLayer = (ZLayer.identity[Console] ++ Config.live) >>> ExampleServiceLive.layer
+    val serviceLayer = (ZLayer.identity[Console] ++ Config.live) >>> BackendServiceLive.layer
     program
       .injectCustom(serviceLayer)
       .exitCode
   }
 }
 
-case class ExampleServiceLive(config: Config) extends BackendService {
+case class BackendServiceLive(config: Config) extends BackendService {
   override def version = UIO.succeed(config.version)
 }
 
-object ExampleServiceLive {
-  val layer = (ExampleServiceLive.apply _).toLayer[BackendService]
+object BackendServiceLive {
+  val layer = (BackendServiceLive.apply _).toLayer[BackendService]
 }
