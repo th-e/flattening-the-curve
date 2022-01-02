@@ -20,16 +20,14 @@ object Frontend {
         cls("header"),
         "Version: ",
         child.text <-- version.signal.map(_.toString),
-        onMountSet(ctx => {
+        onMountCallback(_ => {
           runtime.unsafeRunAsync_ {
-            client.version.tap { receivedVersion =>
-              {
+            client.version.tap { receivedVersion => {
                 version.update(_ => receivedVersion)
                 UIO.unit
               }
             }
           }
-          color := "white"
         })
       )
     )
