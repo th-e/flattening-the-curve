@@ -19,16 +19,7 @@ object Frontend {
       div(
         cls("header"),
         "Version: ",
-        child.text <-- version.signal.map(_.toString),
-        onMountCallback(_ => {
-          runtime.unsafeRunAsync_ {
-            client.version.tap { receivedVersion => {
-                version.update(_ => receivedVersion)
-                UIO.unit
-              }
-            }
-          }
-        })
+        child.text <-- EventStream.fromFuture(Runtime.default.unsafeRunToFuture(client.version))
       )
     )
 }
