@@ -25,18 +25,20 @@ import webtuples.protocol.BackendCommand
 
 object Backend extends App {
   private def httpApp = {
-    val backendService = DeriveRoutes.gen[BackendService]
+    //val backendService = DeriveRoutes.gen[BackendService]
     val socketHandling =
       HttpApp.collect { case Method.GET -> Root / "ws" =>
         Response.socket(userSocket)
       }
-    backendService <> socketHandling
+    //backendService <> socketHandling  TODO: combining does not work
+    socketHandling
   }
 
   val program =
     for {
       port <- system.envOrElse("PORT", "8088").map(_.toInt).orElseSucceed(8088)
-      _    <- zhttp.service.Server.start(port, httpApp)
+      _    <- putStrLn(s"STARTING SERVER ON PORT $port")
+      _ <- zhttp.service.Server.start(port, httpApp)
     } yield ()
 
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = {
@@ -56,6 +58,7 @@ object Backend extends App {
             .mergeAllUnbounded()(
               ZStream.fromEffect(SlideApp.userJoined).drain,
               SlideApp.slideStateStream.map(SendSlideState),
+              SlideApp.visitorStatisticsStream.map(SendVisitorStatistics),
               ZStream.succeed[BackendCommand](SendUserId(userId))
             )
             .map { s =>

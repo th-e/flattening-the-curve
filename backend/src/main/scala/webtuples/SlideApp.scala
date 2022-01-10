@@ -15,7 +15,6 @@ trait SlideApp {
   def visitorStatisticsStream: UStream[VisitorStatistics]
 
   def receiveUserCommand(id: UserId, userCommand: UserCommand): UIO[Unit]
-  //def receiveAdminCommand(adminCommand: AdminCommand): UIO[Unit]
 
   def userJoined: UIO[Unit]
   def userLeft: UIO[Unit]
@@ -33,9 +32,6 @@ object SlideApp {
   def receiveUserCommand(id: UserId, userCommand: UserCommand): ZIO[Has[SlideApp], Nothing, Unit] =
     ZIO.accessM[Has[SlideApp]](_.get.receiveUserCommand(id, userCommand))
 
-//   def receiveAdminCommand(adminCommand: AdminCommand): ZIO[Has[SlideApp], Nothing, Unit] =
-//     ZIO.accessM[Has[SlideApp]](_.get.receiveAdminCommand(adminCommand))
-
   def userJoined: ZIO[Has[SlideApp], Nothing, Unit] =
     ZIO.accessM[Has[SlideApp]](_.get.userJoined)
 
@@ -49,16 +45,6 @@ case class SlideAppLive(
     visitorStatisticsRef: RefM[VisitorStatistics],
     visitorStatisticsStream: UStream[VisitorStatistics]
 ) extends SlideApp {
-
-//   def receiveAdminCommand(adminCommand: AdminCommand): UIO[Unit] =
-//     adminCommand match {
-//       case AdminCommand.NextSlide => slideStateRef.update(s => UIO(s.nextSlide))
-//       case AdminCommand.PrevSlide => slideStateRef.update(s => UIO(s.prevSlide))
-//       case AdminCommand.NextStep  => slideStateRef.update(s => UIO(s.nextStep))
-//       case AdminCommand.PrevStep  => slideStateRef.update(s => UIO(s.prevStep))
-//       case AdminCommand.ToggleQuestion(id) =>
-//         questionStateRef.update(qs => UIO(qs.toggleQuestion(id)))
-//     }
 
   def receiveUserCommand(id: UserId, userCommand: UserCommand): UIO[Unit] =
     userCommand match {

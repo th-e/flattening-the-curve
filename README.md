@@ -6,6 +6,10 @@ Starting point was created with **[zio-app](https://github.com/kitlangton/zio-ap
 
 I'm just consuming Kit Langtons great work and his workshop sessions to get somewhat acquainted with this powerful way of programming.
 
+## Adapt non locale run
+
+1. Change Config.scala in Frontend
+
 
 ## Run Manually (works!)
 
