@@ -2,8 +2,9 @@
 
 A full-stack Scala application powered by ZIO and Laminar.
 
-Created with **[zio-app](https://github.com/kitlangton/zio-app)**.
+Starting point was created with **[zio-app](https://github.com/kitlangton/zio-app)**.
 
+I'm just consuming Kit Langtons great work and his workshop sessions to get somewhat acquainted with this powerful way of programming.
 
 
 ## Run Manually (works!)
